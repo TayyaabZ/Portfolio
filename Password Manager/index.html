@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VaultGuard - Password Manager</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+    <!-- Notifications Container -->
+    <div id="notifications" class="notifications-container"></div>
+
+    <!-- Welcome Screen -->
+    <div id="welcome-view" class="view welcome-screen">
+        <div class="welcome-container">
+            <div class="logo">
+                <div class="logo-icon">🔒</div>
+                <h1 class="logo-text">VaultGuard</h1>
+            </div>
+            <p class="tagline">Your Zero-Knowledge Password Manager</p>
+            
+            <div class="welcome-actions">
+                <button id="create-vault-btn" class="btn btn-primary btn-lg">Create New Vault</button>
+                <button id="unlock-vault-btn" class="btn btn-secondary btn-lg">Unlock Existing Vault</button>
+            </div>
+
+            <div class="feature-cards">
+                <div class="feature-card">
+                    <div class="feature-icon">🔐</div>
+                    <h3>Encrypt Locally</h3>
+                    <p>All encryption happens in your browser</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💾</div>
+                    <h3>Store Securely</h3>
+                    <p>Only encrypted data is stored</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔑</div>
+                    <h3>You Control Keys</h3>
+                    <p>Your master password never leaves your device</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Vault Screen -->
+    <div id="create-view" class="view create-screen">
+        <div class="form-container">
+            <h2>Create Your Vault</h2>
+            <p class="subtitle">Choose a strong master password. You cannot recover it if forgotten!</p>
+
+            <form id="create-vault-form">
+                <div class="form-group">
+                    <label for="master-password">Master Password</label>
+                    <input type="password" id="master-password" required>
+                    <div id="master-strength-meter" class="strength-meter">
+                        <div class="strength-bar">
+                            <div class="strength-bar-fill"></div>
+                        </div>
+                        <div id="master-strength-text" class="strength-text">Enter a password</div>
+                    </div>
+                    <ul id="master-password-feedback" class="password-feedback"></ul>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Master Password</label>
+                    <input type="password" id="confirm-password" required>
+                    <div id="password-match" class="match-indicator"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password-hint">Password Hint (Optional)</label>
+                    <input type="text" id="password-hint" placeholder="A non-obvious reminder">
+                    <small>This hint will NOT be encrypted. Don't make it obvious!</small>
+                </div>
+
+                <div class="password-checklist">
+                    <p><strong>Your master password should:</strong></p>
+                    <ul>
+                        <li>Be at least 12 characters long</li>
+                        <li>Include uppercase and lowercase letters</li>
+                        <li>Include numbers and symbols</li>
+                        <li>Not be used anywhere else</li>
+                        <li>Be memorable to you</li>
+                    </ul>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Create Vault</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Unlock Screen -->
+    <div id="unlock-view" class="view unlock-screen">
+        <div class="unlock-container">
+            <div class="logo-small">
+                <div class="logo-icon">🔒</div>
+                <h2>VaultGuard</h2>
+            </div>
+
+            <form id="unlock-form">
+                <div class="form-group">
+                    <label for="unlock-password">Master Password</label>
+                    <input type="password" id="unlock-password" required autofocus>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Unlock Vault</button>
+            </form>
+
+            <p class="hint-text" id="password-hint-display"></p>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="main-app" class="main-app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon-small">🔒</div>
+                <span class="logo-text-small">VaultGuard</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-item active" data-view="vault">
+                    <span class="nav-icon">🗂️</span>
+                    <span class="nav-label">Vault</span>
+                </div>
+                <div class="nav-item" data-view="generator">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-label">Generator</span>
+                </div>
+                <div class="nav-item" data-view="audit">
+                    <span class="nav-icon">🔍</span>
+                    <span class="nav-label">Security Audit</span>
+                </div>
+                <div class="nav-item" data-view="backup">
+                    <span class="nav-icon">💾</span>
+                    <span class="nav-label">Backup & Restore</span>
+                </div>
+                <div class="nav-item" data-view="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-label">Settings</span>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="theme-toggle" title="Toggle Theme">
+                    <span class="icon">☀️</span>
+                </button>
+                <button id="lock-btn" class="lock-button" title="Lock Vault">
+                    <span class="icon">🔒</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="top-bar-left">
+                    <h2 id="view-title">Vault</h2>
+                </div>
+                <div class="top-bar-center">
+                    <input type="text" id="search-input" class="search-input" placeholder="Search passwords...">
+                    <select id="filter-category" class="filter-select">
+                        <option value="All">All Categories</option>
+                        <option value="Social">Social</option>
+                        <option value="Work">Work</option>
+                        <option value="Banking">Banking</option>
+                        <option value="Gaming">Gaming</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="top-bar-right">
+                    <button id="add-entry-btn" class="btn btn-primary">
+                        <span class="icon">➕</span> Add Entry
+                    </button>
+                    <div id="lock-timer" class="lock-timer">Auto-lock: 5:00</div>
+                </div>
+            </header>
+
+            <!-- Views Container -->
+            <div class="views-container">
+                <!-- Vault View -->
+                <div id="vault-view" class="view active">
+                    <div id="vault-list" class="vault-list">
+                        <!-- Entries will be rendered here -->
+                    </div>
+                </div>
+
+                <!-- Generator View -->
+                <div id="generator-view" class="view">
+                    <div class="generator-container">
+                        <h2>Password Generator</h2>
+                        
+                        <div class="generator-output">
+                            <input type="text" id="generated-password" class="password-output" readonly placeholder="Click Generate">
+                            <button id="copy-gen-btn" class="btn btn-secondary">Copy</button>
+                        </div>
+
+                        <div id="generated-strength" class="strength-display"></div>
+
+                        <div id="generator-options" class="generator-options">
+                            <div class="form-group">
+                                <label for="generator-length">Length: <span id="length-value">16</span></label>
+                                <input type="range" id="generator-length" min="8" max="64" value="16" 
+                                    oninput="document.getElementById('length-value').textContent = this.value">
+                            </div>
+
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="generator-uppercase" checked>
+                                    Uppercase (A-Z)
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="generator-lowercase" checked>
+                                    Lowercase (a-z)
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="generator-digits" checked>
+                                    Digits (0-9)
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="generator-symbols" checked>
+                                    Symbols (!@#$...)
+                                </label>
+                            </div>
+
+                            <div class="personalization-section">
+                                <h3>Personalization (Optional)</h3>
+                                <p>Add personal words to make it memorable (they'll be transformed for security)</p>
+                                <div class="personal-words">
+                                    <input type="text" id="personal-word1" placeholder="Favorite word" maxlength="20">
+                                    <input type="text" id="personal-word2" placeholder="Favorite color" maxlength="20">
+                                    <input type="text" id="personal-word3" placeholder="Favorite game" maxlength="20">
+                                </div>
+                            </div>
+
+                            <button id="generate-btn" class="btn btn-primary btn-block">Generate Password</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Audit View -->
+                <div id="audit-view" class="view">
+                    <div class="audit-container">
+                        <h2>Security Audit</h2>
+                        <p class="subtitle">Analyze your vault for security issues</p>
+                        <div id="audit-content">
+                            <!-- Audit results will be rendered here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Backup & Restore View -->
+                <div id="backup-view" class="view">
+                    <div class="backup-container">
+                        <h2>Backup & Restore</h2>
+
+                        <div class="backup-section">
+                            <h3>Export Encrypted Vault</h3>
+                            <p>Download an encrypted backup of your vault. This file is safe to store anywhere.</p>
+                            <button id="export-btn" class="btn btn-primary">Download Backup</button>
+                        </div>
+
+                        <div class="backup-section">
+                            <h3>Import Encrypted Vault</h3>
+                            <p class="warning">⚠️ Warning: Importing will replace your current vault after successful decryption!</p>
+                            <input type="file" id="import-input" accept=".json" class="file-input">
+                        </div>
+
+                        <div class="backup-info">
+                            <h4>Important Notes:</h4>
+                            <ul>
+                                <li>Backups are fully encrypted with your master password</li>
+                                <li>You'll need your master password to restore from a backup</li>
+                                <li>Store backups in multiple safe locations</li>
+                                <li>Regular backups protect against data loss</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings View -->
+                <div id="settings-view" class="view">
+                    <div class="settings-container">
+                        <h2>Settings</h2>
+
+                        <div class="settings-section">
+                            <h3>Auto-Lock</h3>
+                            <div class="form-group">
+                                <label for="auto-lock-time">Lock vault after (minutes):</label>
+                                <select id="auto-lock-time" class="settings-select">
+                                    <option value="1">1 minute</option>
+                                    <option value="3">3 minutes</option>
+                                    <option value="5" selected>5 minutes</option>
+                                    <option value="10">10 minutes</option>
+                                    <option value="15">15 minutes</option>
+                                    <option value="30">30 minutes</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3>Appearance</h3>
+                            <p>Use the theme toggle button in the sidebar to switch between dark and light modes.</p>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3>Panic Mode</h3>
+                            <p>Press <kbd>ESC</kbd> three times quickly to activate panic mode.</p>
+                            <p>This will immediately lock your vault and display a decoy page.</p>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3>Clipboard Auto-Clear</h3>
+                            <p>Copied passwords are automatically cleared from clipboard after 30 seconds.</p>
+                        </div>
+
+                        <button id="save-settings-btn" class="btn btn-primary">Save Settings</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Entry Modal -->
+    <div id="entry-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Add New Entry</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+
+            <form id="entry-form">
+                <div class="form-group">
+                    <label for="entry-name">Service Name *</label>
+                    <input type="text" id="entry-name" required placeholder="e.g., Facebook, Gmail">
+                </div>
+
+                <div class="form-group">
+                    <label for="entry-username">Username/Email *</label>
+                    <input type="text" id="entry-username" required placeholder="username@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="entry-password">Password *</label>
+                    <div class="password-input-group">
+                        <input type="password" id="entry-password" required>
+                        <button type="button" class="btn btn-secondary btn-sm" id="toggle-password-visibility" title="Show/Hide Password">👁️</button>
+                        <button type="button" class="btn btn-secondary btn-sm" id="gen-password-btn">Generate</button>
+                    </div>
+                    <div id="generated-password-display" class="generated-password-display" style="display: none;">
+                        <div class="generated-password-box">
+                            <code id="generated-password-text"></code>
+                            <div class="generated-password-actions">
+                                <button type="button" class="btn btn-sm btn-primary" id="copy-generated-btn" title="Copy to Clipboard">📋 Copy</button>
+                                <button type="button" class="btn btn-sm btn-secondary" id="regenerate-btn" title="Generate Another">🔄 Regenerate</button>
+                            </div>
+                        </div>
+                        <small class="clipboard-timer" id="clipboard-timer"></small>
+                    </div>
+                    <div id="strength-meter" class="strength-meter">
+                        <div class="strength-bar">
+                            <div class="strength-bar-fill"></div>
+                        </div>
+                        <div id="strength-text" class="strength-text">Enter a password</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="button" class="btn btn-secondary btn-sm" id="breach-check-btn">Check if Breached</button>
+                    <div id="breach-result" class="breach-result"></div>
+                </div>
+
+                <!-- Quick Generator Options -->
+                <div class="quick-generator">
+                    <h4>Quick Generator Options</h4>
+                    <div class="generator-controls">
+                        <div class="form-group">
+                            <label>Length: <span id="gen-length-display">16</span></label>
+                            <input type="range" id="gen-length" min="8" max="32" value="16" 
+                                oninput="document.getElementById('gen-length-display').textContent = this.value">
+                        </div>
+                        <div class="checkbox-group-inline">
+                            <label><input type="checkbox" id="gen-uppercase" checked> ABC</label>
+                            <label><input type="checkbox" id="gen-lowercase" checked> abc</label>
+                            <label><input type="checkbox" id="gen-digits" checked> 123</label>
+                            <label><input type="checkbox" id="gen-symbols" checked> !@#</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="entry-url">URL (Optional)</label>
+                    <input type="url" id="entry-url" placeholder="https://example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="entry-category">Category</label>
+                    <select id="entry-category">
+                        <option value="Social">Social</option>
+                        <option value="Work">Work</option>
+                        <option value="Banking">Banking</option>
+                        <option value="Gaming">Gaming</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="entry-notes">Notes (Optional)</label>
+                    <textarea id="entry-notes" rows="3" placeholder="Additional information"></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary close-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Entry</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/crypto.js"></script>
+    <script src="js/vault.js"></script>
+    <script src="js/generator.js"></script>
+    <script src="js/securityAudit.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

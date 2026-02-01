@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="SmartCampusDB" Class="DataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Table Name="dbo.Announcements" Member="Announcements">
+    <Type Name="Announcement">
+      <Column Name="AnnouncementID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FacultyID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Content" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="PostDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="CourseSection_Announcement" Member="CourseSection" ThisKey="SectionID" OtherKey="SectionID" Type="CourseSection" IsForeignKey="true" />
+      <Association Name="Faculty_Announcement" Member="Faculty" ThisKey="FacultyID" OtherKey="FacultyID" Type="Faculty" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Users" Member="Users">
+    <Type Name="User">
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Username" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="PasswordHash" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Role" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="FullName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="User_Faculty" Member="Faculties" ThisKey="UserID" OtherKey="UserID" Type="Faculty" />
+      <Association Name="User_Student" Member="Students" ThisKey="UserID" OtherKey="UserID" Type="Student" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Attendance" Member="Attendances">
+    <Type Name="Attendance">
+      <Column Name="AttendanceID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SectionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StudentID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Association Name="CourseSection_Attendance" Member="CourseSection" ThisKey="SectionID" OtherKey="SectionID" Type="CourseSection" IsForeignKey="true" />
+      <Association Name="Student_Attendance" Member="Student" ThisKey="StudentID" OtherKey="StudentID" Type="Student" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Courses" Member="Courses">
+    <Type Name="Course">
+      <Column Name="CourseID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CourseCode" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Credits" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PrerequisiteCourseID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Course_Course" Member="Courses" ThisKey="CourseID" OtherKey="PrerequisiteCourseID" Type="Course" />
+      <Association Name="Course_CourseSection" Member="CourseSections" ThisKey="CourseID" OtherKey="CourseID" Type="CourseSection" />
+      <Association Name="Course_Course" Member="Course1" ThisKey="PrerequisiteCourseID" OtherKey="CourseID" Type="Course" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CourseSections" Member="CourseSections">
+    <Type Name="CourseSection">
+      <Column Name="SectionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CourseID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FacultyID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Semester" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Year" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Schedule" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Location" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="CourseSection_Announcement" Member="Announcements" ThisKey="SectionID" OtherKey="SectionID" Type="Announcement" />
+      <Association Name="CourseSection_Attendance" Member="Attendances" ThisKey="SectionID" OtherKey="SectionID" Type="Attendance" />
+      <Association Name="CourseSection_StudentCourse" Member="StudentCourses" ThisKey="SectionID" OtherKey="SectionID" Type="StudentCourse" />
+      <Association Name="CourseSection_CourseMaterial" Member="CourseMaterials" ThisKey="SectionID" OtherKey="SectionID" Type="CourseMaterial" />
+      <Association Name="CourseSection_Assignment" Member="Assignments" ThisKey="SectionID" OtherKey="SectionID" Type="Assignment" />
+      <Association Name="Course_CourseSection" Member="Course" ThisKey="CourseID" OtherKey="CourseID" Type="Course" IsForeignKey="true" />
+      <Association Name="Faculty_CourseSection" Member="Faculty" ThisKey="FacultyID" OtherKey="FacultyID" Type="Faculty" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Faculty" Member="Faculties">
+    <Type Name="Faculty">
+      <Column Name="FacultyID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Department" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Position" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="HireDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Association Name="Faculty_Announcement" Member="Announcements" ThisKey="FacultyID" OtherKey="FacultyID" Type="Announcement" />
+      <Association Name="Faculty_CourseSection" Member="CourseSections" ThisKey="FacultyID" OtherKey="FacultyID" Type="CourseSection" />
+      <Association Name="User_Faculty" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Fees" Member="Fees">
+    <Type Name="Fee">
+      <Column Name="FeeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="StudentID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Amount" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="DueDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="PaymentDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Association Name="Student_Fee" Member="Student" ThisKey="StudentID" OtherKey="StudentID" Type="Student" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.StudentCourses" Member="StudentCourses">
+    <Type Name="StudentCourse">
+      <Column Name="EnrollmentID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="StudentID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EnrollmentDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Grade" Type="System.String" DbType="NVarChar(2)" CanBeNull="true" />
+      <Association Name="CourseSection_StudentCourse" Member="CourseSection" ThisKey="SectionID" OtherKey="SectionID" Type="CourseSection" IsForeignKey="true" />
+      <Association Name="Student_StudentCourse" Member="Student" ThisKey="StudentID" OtherKey="StudentID" Type="Student" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Students" Member="Students">
+    <Type Name="Student">
+      <Column Name="StudentID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EnrollmentDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Major" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="GPA" Type="System.Decimal" DbType="Decimal(3,2)" CanBeNull="true" />
+      <Association Name="Student_Attendance" Member="Attendances" ThisKey="StudentID" OtherKey="StudentID" Type="Attendance" />
+      <Association Name="Student_Fee" Member="Fees" ThisKey="StudentID" OtherKey="StudentID" Type="Fee" />
+      <Association Name="Student_StudentCourse" Member="StudentCourses" ThisKey="StudentID" OtherKey="StudentID" Type="StudentCourse" />
+      <Association Name="Student_Submission" Member="Submissions" ThisKey="StudentID" OtherKey="StudentID" Type="Submission" />
+      <Association Name="User_Student" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Submissions" Member="Submissions">
+    <Type Name="Submission">
+      <Column Name="SubmissionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="AssignmentID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StudentID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SubmissionDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="FileURL" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Grade" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Feedback" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="Student_Submission" Member="Student" ThisKey="StudentID" OtherKey="StudentID" Type="Student" IsForeignKey="true" />
+      <Association Name="Assignment_Submission" Member="Assignment" ThisKey="AssignmentID" OtherKey="AssignmentID" Type="Assignment" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CourseMaterials" Member="CourseMaterials">
+    <Type Name="CourseMaterial">
+      <Column Name="MaterialID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SectionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FilePath" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="UploadDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="CourseSection_CourseMaterial" Member="CourseSection" ThisKey="SectionID" OtherKey="SectionID" Type="CourseSection" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Assignments" Member="Assignments">
+    <Type Name="Assignment">
+      <Column Name="AssignmentID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SectionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="DueDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="MaxPoints" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FileURL" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="UploadDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Assignment_Submission" Member="Submissions" ThisKey="AssignmentID" OtherKey="AssignmentID" Type="Submission" />
+      <Association Name="CourseSection_Assignment" Member="CourseSection" ThisKey="SectionID" OtherKey="SectionID" Type="CourseSection" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

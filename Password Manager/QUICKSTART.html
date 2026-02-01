@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VaultGuard - Quick Start Guide</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            line-height: 1.6;
+            background: #f5f6fa;
+            color: #2d3436;
+        }
+        h1 {
+            color: #6c5ce7;
+            border-bottom: 3px solid #6c5ce7;
+            padding-bottom: 0.5rem;
+        }
+        h2 {
+            color: #6c5ce7;
+            margin-top: 2rem;
+        }
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .info {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        code {
+            background: #e8e9ed;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .feature-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .feature-card strong {
+            color: #6c5ce7;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .start-btn {
+            display: inline-block;
+            background: #6c5ce7;
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin: 1rem 0;
+            transition: transform 0.2s;
+        }
+        .start-btn:hover {
+            transform: translateY(-2px);
+            background: #5f4fd1;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔐 VaultGuard Quick Start Guide</h1>
+
+    <div class="success">
+        <strong>✅ Installation Complete!</strong>
+        <p>Your password manager is ready to use. No additional setup required.</p>
+    </div>
+
+    <a href="index.html" class="start-btn">🚀 Launch VaultGuard</a>
+
+    <h2>🎯 Getting Started in 3 Steps</h2>
+
+    <ol>
+        <li><strong>Create Your Vault</strong>
+            <ul>
+                <li>Click "Create New Vault" on the welcome screen</li>
+                <li>Choose a strong master password (12+ characters)</li>
+                <li>Confirm your password and optionally add a hint</li>
+                <li>Click "Create Vault"</li>
+            </ul>
+        </li>
+        <li><strong>Add Your First Password</strong>
+            <ul>
+                <li>Click the "+ Add Entry" button in the top right</li>
+                <li>Fill in service name, username, and password</li>
+                <li>Use the "Generate" button for a strong password</li>
+                <li>Click "Save Entry"</li>
+            </ul>
+        </li>
+        <li><strong>Explore Features</strong>
+            <ul>
+                <li>Try the Password Generator for new passwords</li>
+                <li>Run a Security Audit to check your vault</li>
+                <li>Export a backup for safekeeping</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h2>🌟 Key Features</h2>
+
+    <div class="feature-list">
+        <div class="feature-card">
+            <strong>🔒 Zero-Knowledge</strong>
+            <p>All encryption happens in your browser. Your data never leaves your device.</p>
+        </div>
+        <div class="feature-card">
+            <strong>⚙️ Password Generator</strong>
+            <p>Create strong, personalized passwords with customizable options.</p>
+        </div>
+        <div class="feature-card">
+            <strong>🔍 Security Audit</strong>
+            <p>Analyze your vault for weak, reused, old, and breached passwords.</p>
+        </div>
+        <div class="feature-card">
+            <strong>💾 Backup & Restore</strong>
+            <p>Export and import encrypted backups of your vault.</p>
+        </div>
+        <div class="feature-card">
+            <strong>🎨 Dark/Light Theme</strong>
+            <p>Toggle between themes using the button in the sidebar.</p>
+        </div>
+        <div class="feature-card">
+            <strong>⏰ Auto-Lock</strong>
+            <p>Vault automatically locks after inactivity to protect your data.</p>
+        </div>
+    </div>
+
+    <h2>⚠️ Important Security Notes</h2>
+
+    <div class="warning">
+        <strong>🔴 Critical: Master Password</strong>
+        <ul>
+            <li><strong>DO NOT FORGET</strong> your master password - there is NO recovery mechanism</li>
+            <li>Choose a password that is both <strong>strong and memorable</strong></li>
+            <li>Consider using a passphrase: "correct horse battery staple" style</li>
+            <li>Do NOT reuse passwords from other services</li>
+        </ul>
+    </div>
+
+    <div class="info">
+        <strong>💡 Best Practices</strong>
+        <ul>
+            <li>Backup your vault regularly using the Export feature</li>
+            <li>Store backups in multiple secure locations</li>
+            <li>Use the Password Generator for all new passwords</li>
+            <li>Run Security Audits monthly to check for issues</li>
+            <li>Update old passwords (90+ days) regularly</li>
+        </ul>
+    </div>
+
+    <h2>🎮 Usage Tips</h2>
+
+    <h3>Password Generator</h3>
+    <ul>
+        <li>Adjust length slider for longer passwords (16+ recommended)</li>
+        <li>Include all character types for maximum strength</li>
+        <li>Add personal words to make passwords memorable yet secure</li>
+        <li>Copy generated passwords directly from the generator</li>
+    </ul>
+
+    <h3>Security Audit</h3>
+    <ul>
+        <li>Click "Check All for Breaches" to verify passwords against known breaches</li>
+        <li>Fix weak passwords immediately - they're your biggest vulnerability</li>
+        <li>Never reuse passwords across different accounts</li>
+        <li>Update passwords that are flagged as old</li>
+    </ul>
+
+    <h3>Backup & Restore</h3>
+    <ul>
+        <li>Export backups before major changes</li>
+        <li>Backups are encrypted with your master password</li>
+        <li>You'll need your master password to restore from backup</li>
+        <li>Store backups on USB drives, cloud storage, or external drives</li>
+    </ul>
+
+    <h2>⌨️ Keyboard Shortcuts</h2>
+
+    <ul>
+        <li><code>ESC × 3</code> - Activate panic mode (locks vault, shows decoy page)</li>
+    </ul>
+
+    <h2>🔧 Technical Details</h2>
+
+    <h3>Storage</h3>
+    <ul>
+        <li><strong>Location:</strong> Browser's IndexedDB (local to your device)</li>
+        <li><strong>Encryption:</strong> AES-GCM 256-bit</li>
+        <li><strong>Key Derivation:</strong> PBKDF2 with 600,000 iterations</li>
+        <li><strong>Integrity:</strong> HMAC-SHA256 tamper detection</li>
+    </ul>
+
+    <h3>Browser Compatibility</h3>
+    <ul>
+        <li>✅ Chrome/Edge (latest)</li>
+        <li>✅ Firefox (latest)</li>
+        <li>✅ Safari (latest)</li>
+        <li>❌ Internet Explorer (not supported)</li>
+    </ul>
+
+    <h2>🆘 Troubleshooting</h2>
+
+    <h3>Can't unlock vault?</h3>
+    <ul>
+        <li>Verify you're entering the correct master password</li>
+        <li>Check for CAPS LOCK</li>
+        <li>Try clearing browser cache (you may lose data - restore from backup)</li>
+    </ul>
+
+    <h3>Data not saving?</h3>
+    <ul>
+        <li>Ensure browser allows IndexedDB storage</li>
+        <li>Check browser's storage settings</li>
+        <li>Disable "Clear data on exit" settings</li>
+    </ul>
+
+    <h3>Performance issues?</h3>
+    <ul>
+        <li>Large vaults (500+ entries) may slow down slightly</li>
+        <li>Security audit with breach checking takes time (rate limited API)</li>
+        <li>Try using a modern browser with hardware acceleration</li>
+    </ul>
+
+    <h2>📱 Mobile Support</h2>
+
+    <div class="info">
+        This password manager is optimized for desktop and laptop screens. Mobile support is limited but functional. For best experience, use on a desktop browser.
+    </div>
+
+    <h2>🔗 Additional Resources</h2>
+
+    <ul>
+        <li>Read <code>README.md</code> for detailed technical documentation</li>
+        <li>Check browser console (F12) for debugging information</li>
+        <li>Web Crypto API: <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API">MDN Documentation</a></li>
+        <li>HaveIBeenPwned API: <a href="https://haveibeenpwned.com/API/v3">HIBP API Docs</a></li>
+    </ul>
+
+    <div class="success">
+        <strong>🎉 You're All Set!</strong>
+        <p>Click the button below to launch VaultGuard and start securing your passwords.</p>
+        <a href="index.html" class="start-btn">🚀 Launch VaultGuard Now</a>
+    </div>
+
+    <hr style="margin: 3rem 0; border: none; border-top: 2px solid #ddd;">
+
+    <p style="text-align: center; color: #636e72;">
+        <small>VaultGuard Password Manager | Zero-Knowledge Security | Your Privacy, Your Control</small>
+    </p>
+</body>
+</html>
